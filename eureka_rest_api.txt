@@ -1,0 +1,99 @@
+https://blog.csdn.net/wo18237095579/article/details/83271829?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase
+原文链接：https://blog.csdn.net/wo18237095579/article/details/83271829
+
+https://github.com/Netflix/eureka/wiki/Eureka-REST-operations
+
+默认是返回xml格式的数据，如果你想返回json数据的格式，在请求头中添加下面2个即可：
+Content-Type:application/json
+Accept:application/json
+
+如果Eureka开启了认证，记得添加认证信息，用户名和密码必须是Base64编码过的
+Authorization:Basic 用户名:密码
+
+查询所有实例
+成功返回200,输出json 或 xml格式
+GET 192.168.11.58:8700/eureka/apps
+
+查询指定appId的实例
+成功返回200,输出json 或 xml格式
+GET 192.168.11.58:8700/eureka/apps/{appId}
+
+根据指定appId和instanceId查询
+成功返回200,输出json 或 xml格式
+GET 192.168.11.58:8700/eureka/apps/{appId}/{instanceId}
+
+根据vip地址查询
+成功返回200,输出json 或 xml格式
+GET 192.168.11.58:8700/eureka/vips/{vipAddress}
+
+根据svip地址查询
+成功返回200,输出json 或 xml格式
+GET 192.168.11.58:8700/eureka/svips/{svipAddress}
+
+注册新的应用实例
+可以输入json或xml格式的body，成功返回204
+POST 192.168.11.58:8700/eureka/apps/{appId}
+
+{
+	"instance": {
+		"instanceId": "demo-order2:11101",
+		"app": "demo-order2",
+		"appGroutName": null,
+		"ipAddr": "127.0.0.1",
+		"sid": "na",
+		"homePageUrl": "",
+		"statusPageUrl": "",
+		"healthCheckUrl": "",
+		"secureHealthCheckUrl": "",
+		"vipAddress": "demo-order2",
+		"secureVipAddress": "demo-order2",
+		"countryId": 1,
+		"dataCenterInfo": {
+			"@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
+			"name": "MyOwn"
+		},
+		"hostName": "127.0.0.1",
+		"status": "UP",
+		"leaseInfo": null,
+		"isCoordinatingDiscoveryServer": false,
+		"lastUpdatedTimestamp": 1529391461000,
+		"lastDirtyTimestamp": 1529391461000,
+		"actionType": null,
+		"asgName": null,
+		"overridden_status": "UNKNOWN",
+		"port": {
+			"$": 11102,
+			"@enabled": "false"
+		},
+		"securePort": {
+			"$": 7002,
+			"@enabled": "false"
+		},
+		"metadata": {
+			"@class": "java.util.Collections$EmptyMap"
+		}
+	}
+}
+
+实测 几个url如果填null，会导致eureka的管理界面报错，所以默认至少要填空字串
+
+注销应用实例
+成功返回200
+DELETE 192.168.11.58:8700/eureka/apps/{appId}/{instanceId}
+
+应用实例发送心跳
+成功返回200，如果instanceId不存在返回404
+PUT 192.168.11.58:8700/eureka/apps/{appId}/{instanceId}
+
+
+暂停应用实例
+成功返回200，失败返回500
+PUT 192.168.11.58:8700/eureka/apps/{appId}/{instanceId}/status?value=OUT_OF_SERVICE
+
+恢复应用实例
+成功返回200，失败返回500
+DELETE 192.168.11.58:8700/eureka/apps/{appId}/{instanceId}/status?value=UP(value可不传)
+
+更新元数据
+成功返回200，失败返回500
+PUT 192.168.11.58:8700/eureka/apps/{appId}/{instanceId}/metadata?key=value
