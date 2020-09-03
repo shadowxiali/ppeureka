@@ -14,6 +14,7 @@
 #include <atomic>
 #include <functional>
 #include <assert.h>
+#include <condition_variable>
 
 namespace sync_list {
 

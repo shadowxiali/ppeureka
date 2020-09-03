@@ -13,6 +13,7 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
+#include <list>
 
 namespace ppeureka { namespace curl {
 

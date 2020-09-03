@@ -55,8 +55,8 @@ namespace ppeureka {
         using Error::m_message;
     public:
         explicit BadStatus(http::Status status, std::string message = "")
-        : m_status(std::move(status))
-        , Error(std::move(message))
+        : Error(std::move(message))
+        , m_status(std::move(status))
         {}
 
         int code() const PPEUREKA_NOEXCEPT{ return m_status.code(); }
